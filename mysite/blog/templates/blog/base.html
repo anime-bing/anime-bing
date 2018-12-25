@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+{% load static %} 
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title></title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{% static 'blog/main.css' %}">
+    <link rel="stylesheet" href="{% static 'user/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC|Lobster|Merriweather|Staatliches|Francois+One|Bungee|Black+And+White+Picture|Cabinfont-family|Old+Standard+TT|Patua+One|Unlock|Bree+Serif"
+    rel="stylesheet">
+    <script src="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
+  </head>
+  <body>
+  <div class="container-fluid">
+    <!-- Navigation -->
+    <header>
+      <nav class="navbar fixed-top navbar-expand-lg" id="navbar-custom">
+        <a class="navbar-brand" href="{% url 'post-list' %}">Anime-Bing</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"><i class="fas fa-ellipsis-v"></i></span>
+        </button>
+        <div class="container-search">
+          <form class="form-inline">
+            <input class="form-control" id="searchbar" type="search" placeholder="Search" aria-label="Search" name="q">
+            <button class="btn btn-outline-success" id="searchicon" type="submit"><i class="fas fa-search"></i></button>
+          </form>
+        </div>
+        {% if not user.is_authenticated %}
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active" id="nav-loggedout"><a id="nav-a-link" href="{% url 'login' %}">login <i class="fas fa-sign-in-alt"></i></a></li>
+            <li class="nav-item active" id="nav-loggedout"><a id="nav-a-link" href="{% url 'register' %}">signup <i class="fas fa-user-plus"></i></a></li>
+          </ul>
+        </div>
+        {% endif %}
+        {% if user.is_authenticated %}
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto">
+            <!-- <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li> -->
+
+            <li class="nav-item dropdown" id="nav-dropdown">
+
+                <a class="nav-link dropdown-toggle" href="{% url 'profile' %}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <img id ="nav-profile-img" src="{{ user.profile.profilepic.url }}" alt="">
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+                  <a class="dropdown-item" href="{% url 'post-list' %}">home</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="{% url 'logout' %}">logout  <i class="fas fa-sign-out-alt"></i></a>
+                </div>
+
+            </li>
+            {% else %}
+
+          </ul>
+
+        </div>
+        {% endif %}
+      </nav>
+    </header>
+    <div class="colosal-top">
+
+    </div>
+
+    <div class="container-fluid">
+    	<div class="container main-body">
+    		{% if messages %}
+    			{% for message in messages %}
+    				<div class="alert alert-{{messages.tags}}">
+    					{{ message }}
+    				</div>
+    			{% endfor %}
+    		{% endif %}
+    		<div class="main-block">
+    			{% block content %}
+
+    			{% endblock %}
+    		</div>
+
+
+    	</div>
+
+    </div>
+    <div class="colosal-bottom">
+
+    </div>
+    <footer>
+      <div class="container-fluid footer-cont" id="footer-cont">
+        <div class="row">
+          <div class="">
+            <h3 class="footer-logo">Anime-Bing <i class="fas fa-globe"></i></h3>
+          </div>
+          <div class="text-center footer-mid col-sm-12 col-lg-3">
+            <p class="p-1-footer">Subscribe to our Youtube channel</p>
+            <span> <a href="https://www.youtube.com/channel/UCpS0zJq4OBSJfwTtaWlI-pg/videos"><i class="fab fa-youtube fa-5x"></i></a> </span>
+          </div>
+          <div class="footer-end text-center col-sm-12 col-lg-3">
+            <p>Contact info:</p>
+            <p>Animebing10@gmail.com</p>
+          </div>
+          <div class="footer-ty text-center col-sm-12 col-lg-3">
+            <p>It's been a honor my fellow Nakama</p>
+            <p>Thank you for visiting us!</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <div class="footer-2">
+      <p>World is filled with Otaku's like you and me</p>
+    </div>
+
+  </div>
+  <script src="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(event){
+      $('.reply-btn').click(function(){
+        $(this).parent().next('#replied-comments').fadeToggle()
+      });
+      $('.profile-btn-1').click(function(){
+        $('.profile-edit-pg').fadeToggle(2500);
+      })
+    });
+
+  </script>
+  </body>
+</html>

@@ -1,0 +1,17 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+  <div class="container del-cont">
+    <div class="jumbotron del-jumb">
+      <h3 class="post-delete-h3">Confirm delete the post?</h3>
+      <p class="pop-up-delete"><span class="post-delete-title">Title:</span><span class="post-delete-title-name">"{{ object.title|capfirst }}"</span></p>
+      <form class="delete-form" method="POST">
+        {% csrf_token %}
+        <fieldset class="del-media">
+          <button class="btn btn-danger btn-md" id="btn-del"type="submit" name="button-del">Yes,delete</button>
+          <a  class="btn btn-success btn-md" id="btn-cancel"href="{% url 'post-detail' object.id object.slug %}">Cancel</a>
+        </fieldset>
+      </form>
+    </div>
+
+  </div>
+{% endblock %}

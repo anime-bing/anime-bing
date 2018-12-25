@@ -1,0 +1,39 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block content %}
+  <div class="jumbotron up-jumb">
+
+    <div class="container top-recent">
+      <ul>
+
+        <li class="user-profile-img-1"> <img id ="user-profile-img" src="{{ user.profile.profilepic.url }}" alt="no image"> </li>
+        <li class="rec-p"><h2 class="user-posts-h2"><strong>Posts by <span id="user-post-name">{{ view.kwargs.username|capfirst }}</span> </strong></h2></li>
+        <p class="comment-counter">{{ posts.count }} Post{{ posts|pluralize }} <i class="far fa-clipboard"></i></p>
+
+      </ul>
+
+
+
+    </div>
+    {% for post in  posts %}
+    <div class="card mb-2" id="user-cont">
+      <article class="media-content-head" id="post-head">
+        <div class="media-content-top">
+          <img class="rounded-circle article-img" src="{{ post.author.profile.profilepic.url }}" alt="">
+          <a href="#" class="article-author">{{ post.author|capfirst }}</a>
+        </div>
+      </article>
+      <div class="card-body">
+        <h5 class="card-title" id="up-title"><a href="{% url 'post-detail' post.id post.slug %}">{{ post.title }}</a></h5>
+        <p class="card-text" id="main-desc">"{{ post.description|capfirst }}..<a class="read-more" href="{% url 'post-detail' post.id post.slug %}">[Read more]</a>"</p>
+        <p class="card-text"><small class="text-muted"> Updated on-{{ post.created_at|date:"D M Y"}}</small></p>
+      </div>
+      <div class="container-pic ml-2 mr-2 mb-2">
+        <img class="card-img-bottom" src="{{ post.post_image.url }}" alt="Card image cap">
+      </div>
+
+    </div>
+    {% endfor %}
+  </div>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block content %}
+{% load crispy_forms_tags %}
+<div class="container login-page-cont">
+  <div class="jumbotron login-phase">
+    <div class="container header-login text-center">
+      <h3 class="login-h3">Anime-Bing</h3>
+      <h4 class="login-h4">Login</h4>
+    </div>
+    <form class="container-login login-form" method="POST">
+      <fieldset class="border-bottom mb-2 ml-2 text-center" id="login-fields">
+        {% csrf_token %}
+        {{ form|crispy }}
+      </fieldset>
+      <fieldset class="text-center">
+        <button type="submit" id="button-login" name="button-login" class="btn btn-danger">Login</button>
+
+      </fieldset>
+      <div class="text-center forg-login">
+        <small class="text-muted ml-2">
+          <a href="{% url 'password_reset' %}">Forgot password?</a>
+        </small>
+      </div>
+
+      <div class="border-top text-su text-center pt-3">
+        <small class="text-muted">
+          Need an account? <a href="{% url 'register' %}">Sign Up Now</a>
+        </small>
+      </div>
+
+      <!-- <div class="text-center">
+        <p>--or--</p>
+        <a href="{% url 'social:begin' 'google-oauth2' %}">
+          <button type="button" class="btn btn-danger" name="button">Google</button>
+        </a>
+        <a href="{% url 'social:begin' 'facebook-oauth2' %}">
+          <button type="button" class="btn btn-primary" name="button">Facebook</button>
+        </a>
+      </div> -->
+
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="content-section">
+  <div class="jumbotron profile-jumb">
+    <div class="box profile-box">
+
+        <img id="pro-profile-img" src="{{ user.profile.profilepic.url }}" class="rounded-circle account-img" >
+        <div class="media-body">
+          <h2 class="account-heading" >{{ user.username|capfirst }}</h2>
+          <p class="text-secondary">{{ user.email }}</p>
+        </div>
+    </div>
+    <div class="container profile-cont">
+      <div class="box-1">
+        <p class="profile-btn-1">Edit Profile <i class="fas fa-user-edit"></i></p>
+      </div>
+      <div class="box-2">
+        <p class="profile-btn-2"><a href="{% url 'user-posts' user.username %}">{{ user.username|capfirst }} Posts<i class="fas fa-ghost"></i></a></p>
+      </div>
+    </div>
+    <div class="profile-edit-pg">
+      <form enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+
+          <legend class="border-bottom mb-4" id="profile-info">Profile Info</legend>
+          {{ u_edit_form|crispy }}
+          <button type="button" class="btn btn-primary" name="button">Change profile picture</button>
+          <div class="profile-pic-edit">
+            {{ p_edit_form|crispy }}
+          </div>
+
+          <div class="text">
+            <button type="submit"class="btn btn-success btn-lg"> Save </button>
+          </div>
+
+
+      </form>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}

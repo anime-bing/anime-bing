@@ -1,0 +1,65 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block content %}
+  <div class="jumbotron jumb-anything text-center mt-2">
+    <h3>Do You Have Anything On Your Mind?</h3>
+    <a class="btn btn-warning btn-lg" href="{% url 'post-new' %}">Post Here</a>
+  </div>
+  <div class="jumbotron mt-2" id="home-jumb">
+    <div class="container top-recent" id="top-recent-home">
+      <ul>
+        <li id="rec-img"> <img class="chibi-01" src="{% static 'hollow-chibi.jpg' %}" alt="no image"> </li>
+        <li class="rec-p"> Recent posts </li>
+        <li id="rec-page">
+          <div class="pagination">
+            {% if posts.has_previous %}
+              <a class="pagination-arrows" href="?page=1"><i class="fas fa-angle-double-left"></i></a>
+              <a class="pagination-arrows" style="margin-right:" href="?page={{ posts.previous_page_number }}"><i class="fas fa-angle-left"></i></a>
+            {% endif %}
+            {% for num in posts.paginator.page_range %}
+              {% if posts.number == num %}
+                <strong style="margin-left:18px;margin-right:18px;">{{ num }}</strong>
+                {% elif num > posts.number|add:'-3' and num < posts.number|add:'3' %}
+                  <a class="pagination-number" href="?page={{ num }}">{{ num }}</a>
+
+              {% endif %}
+            {% endfor %}
+            {% if posts.has_next %}
+              <a class="pagination-arrows" href="?page={{ posts.next_page_number }}"><i class="fas fa-angle-right"></i></a>
+              <a class="pagination-arrows" href="?page={{ posts.paginator.num_pages }}"><i class="fas fa-angle-double-right"></i></a>
+            {% endif %}
+          </div>
+        </li>
+      </ul>
+
+
+
+    </div>
+    <div class="container post-cont" id="home-post-container">
+      {% for post in posts %}
+      <div class="card mb-2">
+        <article class="media-content-head" id="post-head">
+          <div class="media-content-top">
+            <img class="rounded-circle article-img" src="{{ post.author.profile.profilepic.url }}" alt="">
+            <a href="{% url 'user-posts' post.author.username %}" class="article-author">{{ post.author|capfirst }}</a>
+          </div>
+        </article>
+        <div class="card-body">
+          <h3 class="card-title"><a id="main-post-title" href="{% url 'post-detail' post.id post.slug %}">{{ post.title|capfirst }}</a></h3>
+          <p class="card-text" id="main-desc">"{{ post.description }} <a class="read-more" href="{% url 'post-detail' post.id post.slug %}">..[Read more]</a>"</p>
+          <p class="card-text" id="date-media"><small class="text-muted">Updated on -{{ post.created_at|date:"D M Y" }} {{ post.created_at|time:"H:M" }}</small></p>
+        </div>
+        <div class="container-pic">
+          <img class="card-img-bottom" id= "post-img-card" src="{{ post.post_image.url }}" alt="Card image cap">
+        </div>
+
+      </div>
+      {% empty %}
+        <div class="container-fluid">
+          <h3>No search results found!</h3>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+{% endblock %}

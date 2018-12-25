@@ -1,0 +1,90 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+{% load crispy_forms_tags %}
+<div class="jumbotron" id="detail-jumb">
+  <div class="card mt-3 w-100">
+    <article class="media content-section mb-4">
+      <img class="rounded-circle article-img mr-3" id="article-det-img" src="{{ post.author.profile.profilepic.url }}">
+      <a class="ml-4" id="article-det-author" href="{% url 'user-posts' post.author.username %}">{{ post.author|capfirst }}</a>
+      {% if post.author == user %}
+        <div class="up-del">
+          <a href="{% url 'post-edit' post.id post.slug %}" id="edit-can" class="update-btn cls"><i class="fas fa-edit fa-2x"></i></a>
+          <a href="{% url 'post-delete' post.id post.slug %}" id="trash-can" class="delete-btn cls"><i class="fas fa-trash-alt fa-2x"></i></a>
+        </div>
+      {% endif %}
+    </article>
+
+    <div class="pt-2 card-body">
+      <h3 class="card-title" id="detail-title">{{ post.title|capfirst }}</h3>
+      <p class="card-text" id="detail-desc">"{{ post.description }}"</p>
+      <p class="card-text" id="detail-date"><small class="text-muted"> Update on-{{ post.created_at|date:"D M Y" }} {{ post.created_at|time:"H:M" }}</small></p>
+    </div>
+
+    <img class="card-img-bottom" id="detail-img-01" src="{{ post.post_image.url }}" alt="">
+    <div class="container-content" id="detail-content">
+      <p class="mt-1">{{ post.content }}</p>
+    </div>
+  </div>
+  <div class="container-media media-comments">
+    <p class="comment-counter">{{ comments.count }} Comment{{ comments|pluralize }} <i class="fas fa-comment"></i></p>
+    <div class="comment-form media">
+      <form class="Comment-section" method="POST">
+        <fieldset class="comment-fields" >
+          {% csrf_token %}
+          {{ comment_form|crispy }}
+          <div class="submit-comment">
+            {% if request.user.is_authenticated %}
+            <button class="btn btn-success btn-sm" id="comment-submit-btn" type="submit" name="button-submit">Submit</button>
+            {% else %}
+            <a class="btn btn-info btn-sm" href="{% url 'login' %}">login to comment</a>
+            {% endif %}
+          </div>
+        </fieldset>
+      </form>
+    </div>
+
+   {% for comment in comments %}
+
+      <hr class='comment-hr'>
+      <div class="container-fluid set-comment">
+        <img src="{{ comment.user.profile.profilepic.url }}" class="rounded-circle article-img mr-3" id="comment-img">
+        <a href="{% url 'user-posts' comment.user.username %}">{{ comment.user|capfirst }}</a>
+        <fieldset class="comment-field">
+          <p class="mb-0 ml-5" id="comm-content">{{ comment.content }}</p>
+          <button type="button" class="reply-btn btn btn-outline btn-outline btn-sm" name="button">{{ comment.replies.count }} Replies<i class="fas fa-reply"></i></button>
+        </fieldset>
+        <div id="replied-comments" style="display:none;">
+
+          {% for reply in comment.replies.all %}
+
+          <img src="{{ reply.user.profile.profilepic.url }}" class="rounded-circle article-img mr-3" id="comment-img">
+          <small><a href="{% url 'user-posts' reply.user.username %} class="reply-user-name">{{ reply.user|capfirst }}</a></small>
+          <div class="">
+            <p class="reply-content">{{ reply.content }}</p>
+
+          </div>
+          {% endfor %}
+
+          <form class="reply-section mt-1" id="reply-form-section" method="POST">
+            <fieldset class="comment-fields" id="reply-fields" >
+              {% csrf_token %}
+              <input type="hidden" name="comment_id" value="{{ comment.id }}">
+              {{ comment_form|crispy }}
+              <div class="submit-comment">
+                {% if request.user.is_authenticated %}
+                <button class="btn btn-success btn-sm" id="comm-reply-sub"type="submit" name="button-submit">Submit</button>
+                {% else %}
+                <a class="btn btn-info btn-sm" href="{% url 'login' %}">login to reply</a>
+                {% endif %}
+              </div>
+            </fieldset>
+          </form>
+
+        </div>
+
+      </div>
+
+   {% endfor %}
+  </div>
+</div>
+{% endblock %}

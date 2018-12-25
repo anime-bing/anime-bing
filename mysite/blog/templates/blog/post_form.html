@@ -1,0 +1,23 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+  <div class="container post_form-cont">
+    <div class="jumbotron post_form-jumb text-center">
+      <form class="new-post form-class" enctype="multipart/form-data" method="POST">
+        <h3 class="pc-h3" id="post_form-h3">Add New Post</h3>
+        <div class="container-field border-bottom mb-1">
+          <fieldset class="mt-3">
+            {% csrf_token %}
+            {{ form|crispy }}
+          </fieldset>
+        </div>
+        <fieldset class="mt-2 mb-2" >
+          <button type="submit" class="btn btn-success btn-lg" name="button-postnew">Share</button>
+        </fieldset>
+
+      </form>
+    </div>
+
+  </div>
+
+{% endblock %}
